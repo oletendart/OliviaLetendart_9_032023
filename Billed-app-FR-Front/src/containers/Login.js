@@ -39,24 +39,25 @@ export default class Login {
     }
 
     handleSubmitAdmin = e => {
+        console.debug(e);
         e.preventDefault()
         const user = {
             type: "Admin",
-            email: e.target.querySelector(`input[data-testid="employee-email-input"]`).value,
-            password: e.target.querySelector(`input[data-testid="employee-password-input"]`).value,
+            email: e.target.querySelector(`input[data-testid="admin-email-input"]`).value,
+            password: e.target.querySelector(`input[data-testid="admin-password-input"]`).value,
             status: "connected"
         }
         this.localStorage.setItem("user", JSON.stringify(user))
         this.login(user)
-            .catch(
-                (err) => this.createUser(user)
-            )
             .then(() => {
                 this.onNavigate(ROUTES_PATH['Dashboard'])
                 this.PREVIOUS_LOCATION = ROUTES_PATH['Dashboard']
                 PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
                 document.body.style.backgroundColor = "#fff"
             })
+            .catch(
+                (err) => console.log(err)
+            )
     }
 
     // not need to cover this function by tests
@@ -96,3 +97,4 @@ export default class Login {
         }
     }
 }
+
