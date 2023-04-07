@@ -12,10 +12,8 @@ import {ROUTES, ROUTES_PATH} from "../constants/routes.js"
 export default () => {
     const rootDiv = document.getElementById('root');
     rootDiv.innerHTML = ROUTES({pathname: window.location.pathname});
-    console.log(window.location.pathname);
 
     window.onNavigate = (pathname) => {
-        console.log(pathname)
 
         window.history.pushState(
             {},
@@ -24,7 +22,6 @@ export default () => {
         )
         if (pathname === ROUTES_PATH['Login']) {
             rootDiv.innerHTML = ROUTES({pathname})
-            console.log('je suis dans login');
             document.body.style.backgroundColor = "#0E5AE5";
             new Login({document, localStorage, onNavigate, PREVIOUS_LOCATION, store})
         } else if (pathname === ROUTES_PATH['Bills']) {
@@ -63,7 +60,7 @@ export default () => {
         }
     }
 
-    /*window.onpopstate = (e) => {
+    window.onpopstate = (e) => {
         const user = JSON.parse(localStorage.getItem('user'))
         if (window.location.pathname === "/" && !user) {
             document.body.style.backgroundColor = "#0E5AE5"
@@ -73,14 +70,10 @@ export default () => {
         }
     }
 
-     */
-
     if (window.location.pathname.split('/').pop() === "") {
-        console.log('Pathname = /');
         new Login({document, localStorage, onNavigate, PREVIOUS_LOCATION, store})
         document.body.style.backgroundColor = "#0E5AE5"
     } else if (!!window.location.hash) {
-        console.log('Pathname != rien');
         if (window.location.hash === ROUTES_PATH['Bills']) {
             rootDiv.innerHTML = ROUTES({pathname: window.location.hash, loading: true})
             const divIcon1 = document.getElementById('layout-icon1')
