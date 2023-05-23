@@ -26,20 +26,29 @@ export default class NewBill {
         formData.append('file', file)
         formData.append('email', email)
 
-        this.store
-            .bills()
-            .create({
-                data: formData,
-                headers: {
-                    noContentType: true
-                }
-            })
-            .then(({fileUrl, key}) => {
-                console.log(fileUrl)
-                this.billId = key
-                this.fileUrl = fileUrl
-                this.fileName = fileName
-            }).catch(error => console.error(error))
+        if (fileName.endsWith(".png") || fileName.endsWith(".jpeg") || fileName.endsWith(".jpg")) {
+            this.store
+                .bills()
+                .create({
+                    data: formData,
+                    headers: {
+                        noContentType: true
+                    }
+                })
+                .then(({fileUrl, key}) => {
+                    this.billId = key
+                    this.fileUrl = fileUrl
+                    this.fileName = fileName
+                }).catch(error => console.error(error))
+        } else {
+            const dataFile = document.querySelector('input[data-testid="file"]');
+            const span = document.createElement('span');
+            const textError = document.createTextNode("Veuillez entrer un fichier de type jpg, jpeg ou png.");
+            span.appendChild(textError);
+            span.style.color = "red";
+            dataFile.insertAdjacentElement('afterend', span);
+        }
+
     }
     handleSubmit = e => {
         e.preventDefault()
@@ -58,6 +67,7 @@ export default class NewBill {
             fileName: this.fileName,
             status: 'pending'
         }
+        console.log(bill)
         this.updateBill(bill)
         this.onNavigate(ROUTES_PATH['Bills'])
     }

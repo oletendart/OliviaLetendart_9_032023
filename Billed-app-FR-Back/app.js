@@ -8,6 +8,7 @@ const userRoute = require('./routes/user');
 const billRoute = require('./routes/bill');
 
 const upload = multer({dest: 'public/'});
+console.log(upload);
 const app = express();
 app.use(cors());
 app.use(helmet());
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 });
 app.use(authMiddleware);
 app.use(upload.single('file'));
+console.log(upload.single('file'));
 app.use('/auth', authRoute);
 app.use('/users', userRoute);
 app.use('/bills', billRoute);
