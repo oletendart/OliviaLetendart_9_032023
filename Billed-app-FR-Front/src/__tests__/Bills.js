@@ -125,7 +125,7 @@ describe("Given I am connected as an employee", () => {
     describe("When Employee Navigate on Bills Dashboard", () => {
         beforeEach(() => {
             jest.spyOn(mockStore, "bills");
-            Object.defineProperty(window, "localStorage", () => {
+            Object.defineProperty(window, "localStorage", {
                 value: localStorageMock
             });
             window.localStorage.setItem(
@@ -174,6 +174,11 @@ describe("Given I am connected as an employee", () => {
         const message = await screen.getByText(/Erreur 500/);
         expect(message).toBeTruthy();
 
+    })
+
+    test('fetches bills from an API', async () => {
+        const bills = await mockStore.bills().list();
+        expect(bills.length).toBe(4)
     })
 
 
