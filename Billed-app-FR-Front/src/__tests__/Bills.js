@@ -35,5 +35,18 @@ describe("Given I am connected as an employee", () => {
             const datesSorted = [...dates].sort(antiChrono)
             expect(dates).toEqual(datesSorted)
         })
+        test("fetches bills from mock API GET", async () => {
+            Object.defineProperty(window, 'localStorage', {value: localStorageMock})
+            window.localStorage.setItem('user', JSON.stringify({
+                type: 'Employee'
+            }))
+            const root = document.createElement("div")
+            root.setAttribute("id", "root")
+            document.body.append(root)
+            router()
+            window.onNavigate(ROUTES_PATH.Bills)
+            expect(await waitFor(() => screen.getByText('Mes notes de frais'))).toBeTruthy()
+        })
     })
 })
+
