@@ -47,6 +47,21 @@ describe("Given I am connected as an employee", () => {
             window.onNavigate(ROUTES_PATH.Bills)
             expect(await waitFor(() => screen.getByText('Mes notes de frais'))).toBeTruthy()
         })
+        test("Then click on button new bill should redirect on page new bill", async () => {
+            Object.defineProperty(window, 'localStorage', {value: localStorageMock})
+            window.localStorage.setItem('user', JSON.stringify({
+                type: 'Employee',
+                email: 'e@e.tld'
+            }))
+            const root = document.createElement("div")
+            root.setAttribute("id", "root")
+            document.body.append(root)
+            router()
+            window.onNavigate(ROUTES_PATH.Bills)
+            let btnNewBill = screen.getByTestId('btn-new-bill')
+            btnNewBill.click();
+            expect(await waitFor(() => screen.getByText('Envoyer une note de frais'))).toBeTruthy()
+        })
     })
 })
 
